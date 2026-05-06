@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* PAGE TITLE */
+.page-title{
+
+    font-size:42px;
+
+    font-weight:800;
+
+    margin-bottom:35px;
+
+    letter-spacing:1px;
+}
+
+/* GRID */
+.top-books-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:28px;
+}
+
+/* CARD */
+.book-card{
+
+    background:#111827;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    transition:0.35s ease;
+
+    box-shadow:
+    0 12px 38px rgba(0,0,0,0.28);
+
+    border:
+    1px solid rgba(255,255,255,0.05);
+}
+
+.book-card:hover{
+
+    transform:
+    translateY(-12px)
+    scale(1.02);
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,0.45);
+}
+
+/* PLACEHOLDER IMAGE */
+.book-placeholder{
+
+    height:260px;
+
+    border-radius:22px;
+
+    margin:16px;
+
+    background:
+    linear-gradient(135deg,#1e293b,#334155);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:70px;
+}
+
+/* CONTENT */
+.book-content{
+
+    padding:0 20px 22px 20px;
+}
+
+.book-title{
+
+    font-size:26px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+}
+
+.book-author{
+
+    color:#94a3b8;
+
+    margin-bottom:14px;
+
+    font-size:15px;
+}
+
+/* RATING */
+.rating{
+
+    display:inline-block;
+
+    padding:10px 16px;
+
+    border-radius:14px;
+
+    background:
+    linear-gradient(135deg,#f59e0b,#facc15);
+
+    color:#111827;
+
+    font-weight:800;
+
+    margin-bottom:18px;
+
+    font-size:15px;
+}
+
+/* BUTTON */
+.view-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:
+    linear-gradient(135deg,#2563eb,#7c3aed);
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s ease;
+}
+
+.view-btn:hover{
+
+    transform:scale(1.03);
+
+    box-shadow:
+    0 12px 30px rgba(37,99,235,0.35);
+}
+
+/* EMPTY STATE */
+.empty-box{
+
+    background:#111827;
+
+    border-radius:30px;
+
+    padding:50px;
+
+    text-align:center;
+
+    font-size:22px;
+
+    color:#94a3b8;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+
+    .page-title{
+
+        font-size:34px;
+    }
+
+    .top-books-grid{
+
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+<h1 class="page-title">
+    🏆 Top Rated Books
+</h1>
+
+{% if books %}
+
+<div class="top-books-grid">
+
+{% for b in books %}
+
+<div class="book-card">
+
+    <!-- PLACEHOLDER -->
+    <div class="book-placeholder">
+        📚
+    </div>
+
+    <div class="book-content">
+
+        <div class="book-title">
+            {{ b.name }}
+        </div>
+
+        <div class="book-author">
+            ✍ {{ b.author }}
+        </div>
+
+        <div class="rating">
+            ⭐ {{ b.avg_rating | round(1) }}/5
+        </div>
+
+        <a href="/book/{{ b.id }}">
+
+            <button class="view-btn">
+                View Book
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-box">
+
+    🚫 No rated books available yet
+
+</div>
+
+{% endif %}
+
+{% endblock %}

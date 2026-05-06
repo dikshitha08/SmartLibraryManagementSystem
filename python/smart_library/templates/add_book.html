@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ✅ SUCCESS MESSAGE -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div style="background:#d4edda;color:#155724;padding:10px;border-radius:5px;margin-bottom:15px;">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<h2>➕ Add Book</h2>
+
+<div class="card" style="max-width:500px;margin:auto;">
+
+<!-- ✅ FORM START (FIXED) -->
+<form method="POST" action="/add_book" enctype="multipart/form-data">
+
+<label>Book Name</label><br>
+<input name="name" id="name" required><br><br>
+
+<label>Author</label><br>
+<input name="author" id="author" required><br><br>
+
+<label>Summary</label><br>
+<input name="summary" id="summary"><br><br>
+
+<label>Quantity</label><br>
+<input type="number" name="quantity" id="quantity" required><br><br>
+
+<label>Price</label><br>
+<input type="number" name="price" id="price" required><br><br>
+
+<label>Max Borrow Days</label><br>
+<input type="number" name="max_days" id="days" required><br><br>
+
+<label>Fine per Day</label><br>
+<input type="number" name="fine_per_day" id="fine" required><br><br>
+
+<label>Upload Image</label><br>
+<input type="file" name="image"><br><br>
+
+<button type="submit" class="btn-primary">
+    Add Book
+</button>
+
+</form>
+<!-- ✅ FORM END -->
+
+</div>
+
+<script>
+function validateForm() {
+
+    let quantity = document.getElementById("quantity").value;
+    let price = document.getElementById("price").value;
+    let days = document.getElementById("days").value;
+    let fine = document.getElementById("fine").value;
+
+    if (quantity < 0 || price < 0 || days <= 0 || fine < 0) {
+        alert("⚠️ Please enter valid positive values");
+        return false;
+    }
+
+    return true;
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>🏢 Select Library</h2>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:20px;">
+
+{% for l in libs %}
+<div class="card" style="text-align:center; padding:20px;">
+
+    <h3>{{ l.library }}</h3>
+
+    <!-- 📍 ADDRESS -->
+    <p style="color:gray;">{{ l.address }}</p>
+
+    <!-- ENTER -->
+    <a href="/books/{{ l.id }}">
+        <button class="btn-primary">Enter</button>
+    </a>
+
+    <!-- 📍 VIEW LOCATION BUTTON -->
+    <a href="https://www.google.com/maps/search/?api=1&query={{ l.address }}" target="_blank">
+        <button style="margin-top:10px;background:#28a745;color:white;">
+            📍 View Location
+        </button>
+    </a>
+
+    <!-- 🔥 OPTIONAL MAP EMBED -->
+    <div style="margin-top:15px;">
+        <iframe
+            width="100%"
+            height="180"
+            style="border:0;border-radius:8px;"
+            loading="lazy"
+            allowfullscreen
+            src="https://www.google.com/maps?q={{ l.address }}&output=embed">
+        </iframe>
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

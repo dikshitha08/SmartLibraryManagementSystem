@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:
+    radial-gradient(circle at top,
+    #0f2b6b 0%,
+    #081127 40%,
+    #050816 100%);
+
+    color:white;
+
+    min-height:100vh;
+}
+
+/* NAVBAR */
+.nav{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:20px 35px;
+
+    background:
+    rgba(255,255,255,0.06);
+
+    backdrop-filter:blur(18px);
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.08);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    box-shadow:
+    0 4px 25px rgba(0,0,0,0.25);
+}
+
+/* LOGO */
+.nav h2{
+
+    font-size:30px;
+
+    font-weight:800;
+
+    background:
+    linear-gradient(90deg,#60a5fa,#a855f7);
+
+    background-clip:text;
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+}
+
+/* SEARCH */
+.nav form{
+
+    flex:1;
+
+    max-width:450px;
+}
+
+.nav input{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    color:white;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:0.3s ease;
+}
+
+.nav input:focus{
+
+    box-shadow:
+    0 0 0 3px rgba(37,99,235,0.35);
+}
+
+.nav input::placeholder{
+
+    color:#cbd5e1;
+}
+
+/* RIGHT NAV */
+.nav-right{
+
+    display:flex;
+
+    gap:16px;
+
+    align-items:center;
+}
+
+.nav-right a{
+
+    text-decoration:none;
+
+    color:white;
+
+    font-weight:700;
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
+    transition:0.3s ease;
+
+    background:
+    rgba(255,255,255,0.06);
+}
+
+.nav-right a:hover{
+
+    transform:
+    translateY(-3px);
+
+    background:
+    linear-gradient(135deg,#2563eb,#7c3aed);
+
+    box-shadow:
+    0 10px 25px rgba(37,99,235,0.35);
+}
+
+/* MAIN CONTENT */
+.main{
+
+    padding:35px;
+
+    max-width:1450px;
+
+    margin:auto;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+    .nav{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+        padding:20px;
+    }
+
+    .nav form{
+
+        max-width:100%;
+    }
+
+    .nav-right{
+
+        justify-content:center;
+
+        flex-wrap:wrap;
+    }
+
+    .main{
+
+        padding:20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="nav">
+
+    <h2>📚 Library</h2>
+
+    <form action="/books" method="GET">
+
+        <input
+            name="search"
+            placeholder="🔍 Search books..."
+        >
+
+    </form>
+
+    <div class="nav-right">
+
+        <a href="/account">
+            👤 Account
+        </a>
+
+        <a href="/logout">
+            🚪 Logout
+        </a>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    {% block content %}{% endblock %}
+
+</div>
+
+</body>
+
+</html>

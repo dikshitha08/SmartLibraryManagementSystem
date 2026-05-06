@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="margin-bottom:20px;">📊 Dashboard</h2>
+
+<!-- 🔥 SUMMARY CARDS -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:25px;">
+
+    <div class="card" style="text-align:center;">
+        <h3>{{ books|length }}</h3>
+        <p>Total Books</p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+        <h3>
+        {{ books | selectattr("quantity","equalto",0) | list | length }}
+        </h3>
+        <p>Out of Stock</p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+        <h3>
+        {{ books | sum(attribute="quantity") }}
+        </h3>
+        <p>Total Stock</p>
+    </div>
+
+</div>
+
+<!-- 🔥 BOOK GRID -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
+
+{% for b in books %}
+<div class="card" style="position:relative;">
+
+    <!-- BOOK TITLE -->
+    <h3 style="margin-bottom:5px;">{{ b.name }}</h3>
+    <p style="color:gray;font-size:14px;">{{ b.author }}</p>
+
+    <!-- STOCK STATUS -->
+    {% if b.quantity == 0 %}
+        <p style="color:red;font-weight:bold;">Out of Stock</p>
+    {% elif b.quantity < 3 %}
+        <p style="color:orange;font-weight:bold;">Low Stock ({{ b.quantity }})</p>
+    {% else %}
+        <p style="color:green;">Stock: {{ b.quantity }}</p>
+    {% endif %}
+
+    <!-- ACTION BUTTONS -->
+    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="/edit_book/{{ b.id }}">
+            <button class="btn-primary">Edit</button>
+        </a>
+
+        <a href="/book/{{ b.id }}">
+            <button class="btn-success">View</button>
+        </a>
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

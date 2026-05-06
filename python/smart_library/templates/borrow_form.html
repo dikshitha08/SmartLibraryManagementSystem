@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📥 Borrow Book</h2>
+
+<div class="card" style="max-width:500px;margin:auto;">
+
+<h3>{{ book.name }}</h3>
+
+<form method="POST" action="/submit_borrow/{{ book.id }}" onsubmit="return validateForm()">
+
+<input name="name" placeholder="Name" required><br><br>
+
+<input name="email" placeholder="Email" required><br><br>
+
+<input name="phone" id="phone" placeholder="Phone (10 digits)" required><br><br>
+
+<input name="address" placeholder="Address" required><br><br>
+
+<label>From Date</label><br>
+<input type="date" name="from_date" id="from_date" required><br><br>
+
+<label>To Date</label><br>
+<input type="date" name="to_date" id="to_date" required><br><br>
+
+<select name="payment">
+    <option>Cash</option>
+    <option>UPI</option>
+</select>
+
+<br><br>
+
+<button class="btn-primary">Submit</button>
+
+</form>
+
+</div>
+
+<!-- 🔥 VALIDATION + MAX DAYS SCRIPT -->
+<script>
+
+function validateForm() {
+    let phone = document.getElementById("phone").value;
+
+    if (!/^[0-9]{10}$/.test(phone)) {
+        alert("Enter valid 10-digit phone number");
+        return false;
+    }
+
+    return true;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const maxDays = Number("{{ book.max_days or 0 }}");
+
+    document.getElementById("from_date").addEventListener("change", function() {
+
+        let from = new Date(this.value);
+        if (!this.value) return;
+
+        let maxDate = new Date(from);
+        maxDate.setDate(maxDate.getDate() + maxDays);
+
+        let formatted = maxDate.toISOString().split("T")[0];
+
+        let toInput = document.getElementById("to_date");
+
+        toInput.min = this.value;
+        toInput.max = formatted;
+    });
+
+});
+
+</script>
+
+{% endblock %}

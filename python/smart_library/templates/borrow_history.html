@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="margin-bottom:20px;">📚 My Borrowed Books</h2>
+
+<div class="card">
+
+<table style="width:100%;border-collapse:collapse;">
+
+<tr style="background:#222;color:white;">
+<th>Book</th>
+<th>Status</th>
+<th>Borrow Date</th>
+<th>Return Date</th>
+<th>Fine</th>
+<th>OTP</th>
+</tr>
+
+{% if data %}
+
+    {% for r in data %}
+    <tr style="border-bottom:1px solid #ddd;text-align:center;">
+
+    <!-- 📚 BOOK -->
+    <td>{{ r.name }}</td>
+
+    <!-- 🔥 STATUS -->
+    <td>
+
+        {% if r.status == "Approved" %}
+
+            <span style="color:green;font-weight:bold;">
+                ✔ Approved
+            </span>
+
+        {% elif r.status == "Pending" %}
+
+            <span style="color:orange;font-weight:bold;">
+                ⏳ Pending
+            </span>
+
+        {% elif r.status == "Returned" %}
+
+            <span style="color:blue;font-weight:bold;">
+                📦 Returned
+            </span>
+
+        {% else %}
+
+            <span style="color:red;font-weight:bold;">
+                ❌ Rejected
+            </span>
+
+        {% endif %}
+
+    </td>
+
+    <!-- 📅 BORROW DATE -->
+    <td>
+        {{ r.borrow_date }}
+    </td>
+
+    <!-- 📅 RETURN DATE -->
+    <td>
+
+        {{ r.return_date }}
+
+        {% if r.fine and r.fine > 0 %}
+
+            <br>
+
+            <span style="color:red;font-size:13px;">
+                ⚠ Overdue
+            </span>
+
+        {% endif %}
+
+    </td>
+
+    <!-- 💰 FINE -->
+    <td>
+
+        {% if r.fine and r.fine > 0 %}
+
+            <span style="color:red;font-weight:bold;">
+                ₹{{ r.fine }}
+            </span>
+
+        {% else %}
+
+            <span style="color:green;">
+                ₹0
+            </span>
+
+        {% endif %}
+
+    </td>
+
+    <!-- 🔑 OTP -->
+    <td>
+
+        <span style="
+            background:#d4edda;
+            color:green;
+            padding:6px 10px;
+            border-radius:6px;
+            font-weight:bold;
+        ">
+            🔑 {{ r.otp }}
+        </span>
+
+    </td>
+
+    </tr>
+
+    {% endfor %}
+
+{% else %}
+
+<tr>
+
+<td colspan="6"
+    style="
+        text-align:center;
+        padding:25px;
+        font-size:16px;
+        color:gray;
+    ">
+
+    📭 No borrowed books found
+
+</td>
+
+</tr>
+
+{% endif %}
+
+</table>
+
+</div>
+
+{% endblock %}

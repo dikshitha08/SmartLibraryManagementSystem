@@ -1,0 +1,643 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* PAGE TITLE */
+.page-title{
+    margin-bottom:35px;
+    font-size:42px;
+    font-weight:800;
+    letter-spacing:1px;
+}
+
+/* MAIN LAYOUT */
+.shop-layout{
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+}
+
+/* SIDEBAR */
+.filter-box{
+    width:290px;
+
+    background:#111827;
+
+    border:1px solid rgba(255,255,255,0.06);
+
+    border-radius:28px;
+
+    padding:24px;
+
+    position:sticky;
+    top:20px;
+
+    box-shadow:
+    0 10px 40px rgba(0,0,0,0.35);
+}
+
+.filter-box h3{
+    margin-bottom:25px;
+    font-size:28px;
+}
+
+.filter-box h4{
+    margin-top:22px;
+    margin-bottom:10px;
+
+    color:#94a3b8;
+
+    font-size:15px;
+}
+
+.filter-box input,
+.filter-box select{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:16px;
+
+    border:none;
+
+    background:#1e293b;
+
+    color:white;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:0.25s ease;
+
+    margin-bottom:12px;
+}
+
+.filter-box input:focus,
+.filter-box select:focus{
+
+    box-shadow:
+    0 0 0 3px rgba(59,130,246,0.4);
+}
+
+.filter-box option{
+    background:#111827;
+}
+
+/* RIGHT AREA */
+.books-area{
+    flex:1;
+}
+
+/* SECTION TITLE */
+.recommended-title{
+    margin-bottom:18px;
+
+    font-size:32px;
+
+    font-weight:700;
+}
+
+/* RECOMMENDED */
+.recommended-row{
+    display:flex;
+
+    gap:22px;
+
+    overflow-x:auto;
+
+    padding-bottom:14px;
+
+    margin-bottom:40px;
+}
+
+/* RECOMMENDED CARD */
+.recommended-card{
+
+    min-width:240px;
+
+    background:#111827;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    transition:0.35s ease;
+
+    box-shadow:
+    0 10px 35px rgba(0,0,0,0.28);
+}
+
+.recommended-card:hover{
+
+    transform:
+    translateY(-10px)
+    scale(1.02);
+}
+
+.recommended-card h3{
+
+    margin-top:16px;
+
+    font-size:22px;
+
+    padding:0 16px;
+}
+
+.recommended-card p{
+
+    padding:0 16px 12px 16px;
+}
+
+/* BOOK GRID */
+#bookGrid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:28px;
+}
+
+/* BOOK CARD */
+.book-card{
+
+    background:#111827;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    transition:0.35s ease;
+
+    box-shadow:
+    0 12px 38px rgba(0,0,0,0.28);
+}
+
+.book-card:hover{
+
+    transform:
+    translateY(-12px)
+    scale(1.02);
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,0.4);
+}
+
+.book-card h3{
+
+    margin-top:18px;
+
+    margin-bottom:10px;
+
+    font-size:24px;
+
+    padding:0 18px;
+}
+
+.author{
+
+    color:#94a3b8;
+
+    margin-bottom:12px;
+
+    padding:0 18px;
+}
+
+.rating{
+
+    margin-bottom:12px;
+
+    color:#facc15;
+
+    padding:0 18px;
+
+    font-size:17px;
+}
+
+.stock{
+
+    margin-bottom:18px;
+
+    font-weight:700;
+
+    padding:0 18px;
+}
+
+/* BUTTON */
+.view-btn{
+
+    width:calc(100% - 36px);
+
+    margin:0 18px 20px 18px;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    color:white;
+
+    font-size:15px;
+
+    transition:0.25s ease;
+}
+
+.view-btn:hover{
+
+    transform:scale(1.03);
+}
+
+.primary-btn{
+
+    background:
+    linear-gradient(135deg,#2563eb,#7c3aed);
+}
+
+.success-btn{
+
+    background:
+    linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.disabled-btn{
+
+    background:#475569;
+}
+
+/* PLACEHOLDER */
+.book-placeholder{
+
+    height:260px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(135deg,#1e293b,#334155);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:70px;
+
+    margin:15px;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{
+    height:8px;
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#475569;
+    border-radius:20px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+    .shop-layout{
+        flex-direction:column;
+    }
+
+    .filter-box{
+        width:100%;
+        position:relative;
+    }
+
+    #bookGrid{
+        grid-template-columns:1fr;
+    }
+
+    .page-title{
+        font-size:34px;
+    }
+
+}
+
+</style>
+
+<h2 class="page-title">📚 Browse Books</h2>
+
+<div class="shop-layout">
+
+    <!-- FILTERS -->
+    <div class="filter-box">
+
+        <h3>🔎 Filters</h3>
+
+        <input
+            id="search"
+            placeholder="Search books..."
+        >
+
+        <h4>Sort By</h4>
+
+        <select id="sortFilter">
+
+            <option value="">Default</option>
+
+            <option value="lowHigh">
+                Price: Low → High
+            </option>
+
+            <option value="highLow">
+                Price: High → Low
+            </option>
+
+            <option value="az">
+                Name: A → Z
+            </option>
+
+            <option value="za">
+                Name: Z → A
+            </option>
+
+        </select>
+
+        <h4>Price Range</h4>
+
+        <select id="priceFilter">
+
+            <option value="">All Prices</option>
+
+            <option value="below100">
+                Below ₹100
+            </option>
+
+            <option value="100to500">
+                ₹100 - ₹500
+            </option>
+
+            <option value="above500">
+                Above ₹500
+            </option>
+
+        </select>
+
+        <h4>Availability</h4>
+
+        <select id="availabilityFilter">
+
+            <option value="">All</option>
+
+            <option value="available">
+                Available
+            </option>
+
+            <option value="out">
+                Out of Stock
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- BOOKS AREA -->
+    <div class="books-area">
+
+        {% if recommended %}
+
+        <h3 class="recommended-title">
+            🔥 Recommended Books
+        </h3>
+
+        <div class="recommended-row">
+
+        {% for r in recommended %}
+
+            <div class="recommended-card">
+
+                <div class="book-placeholder">
+                    📚
+                </div>
+
+                <h3>{{ r.name }}</h3>
+
+                <p>{{ r.author }}</p>
+
+                {% if r.quantity > 0 %}
+
+                    <p style="color:#22c55e;font-weight:600;padding:0 16px 18px 16px;">
+                        Available
+                    </p>
+
+                {% else %}
+
+                    <p style="color:#ef4444;font-weight:600;padding:0 16px 18px 16px;">
+                        Out of Stock
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+        <!-- BOOK GRID -->
+        <div id="bookGrid">
+
+        {% for b in books %}
+
+        <div class="book-card"
+
+             data-name="{{ b.name }}"
+             data-price="{{ b.price }}"
+             data-qty="{{ b.quantity }}">
+
+            <div class="book-placeholder">
+                📚
+            </div>
+
+            <h3>{{ b.name }}</h3>
+
+            <p class="author">
+                {{ b.author }}
+            </p>
+
+            {% if b.quantity == 0 %}
+
+                <p class="stock" style="color:#ef4444;">
+                    Out of Stock
+                </p>
+
+                <button
+                    class="view-btn disabled-btn"
+                    disabled
+                >
+                    Unavailable
+                </button>
+
+            {% elif b.quantity < 3 %}
+
+                <p class="stock" style="color:#f59e0b;">
+                    Low Stock ({{ b.quantity }})
+                </p>
+
+                <a href="/book/{{ b.id }}">
+
+                    <button class="view-btn success-btn">
+                        View Book
+                    </button>
+
+                </a>
+
+            {% else %}
+
+                <p class="stock" style="color:#22c55e;">
+                    Available
+                </p>
+
+                <a href="/book/{{ b.id }}">
+
+                    <button class="view-btn primary-btn">
+                        View Book
+                    </button>
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("search").oninput = filterBooks;
+
+document.getElementById("availabilityFilter").onchange = filterBooks;
+
+document.getElementById("sortFilter").onchange = filterBooks;
+
+document.getElementById("priceFilter").onchange = filterBooks;
+
+function filterBooks(){
+
+    let search =
+    document.getElementById("search")
+    .value
+    .toLowerCase();
+
+    let availability =
+    document.getElementById("availabilityFilter")
+    .value;
+
+    let sort =
+    document.getElementById("sortFilter")
+    .value;
+
+    let price =
+    document.getElementById("priceFilter")
+    .value;
+
+    let grid =
+    document.getElementById("bookGrid");
+
+    let cards =
+    Array.from(document.querySelectorAll(".book-card"));
+
+    cards.forEach(card=>{
+
+        let name =
+        card.dataset.name.toLowerCase();
+
+        let qty =
+        parseInt(card.dataset.qty);
+
+        let bookPrice =
+        parseInt(card.dataset.price);
+
+        let show = true;
+
+        if(!name.includes(search))
+            show = false;
+
+        if(availability==="available" && qty===0)
+            show = false;
+
+        if(availability==="out" && qty>0)
+            show = false;
+
+        if(price==="below100" && bookPrice>=100)
+            show = false;
+
+        if(price==="100to500" &&
+           (bookPrice<100 || bookPrice>500))
+            show = false;
+
+        if(price==="above500" && bookPrice<=500)
+            show = false;
+
+        card.style.display =
+        show ? "block" : "none";
+
+    });
+
+    cards.sort((a,b)=>{
+
+        let nameA =
+        a.dataset.name.toLowerCase();
+
+        let nameB =
+        b.dataset.name.toLowerCase();
+
+        let priceA =
+        parseInt(a.dataset.price);
+
+        let priceB =
+        parseInt(b.dataset.price);
+
+        if(sort==="lowHigh")
+            return priceA-priceB;
+
+        if(sort==="highLow")
+            return priceB-priceA;
+
+        if(sort==="az")
+            return nameA.localeCompare(nameB);
+
+        if(sort==="za")
+            return nameB.localeCompare(nameA);
+
+        return 0;
+
+    });
+
+    cards.forEach(card=>{
+        grid.appendChild(card);
+    });
+
+}
+
+</script>
+
+{% endblock %}

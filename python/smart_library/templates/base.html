@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Library</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
+            color:white;
+            display:flex;
+            min-height:100vh;
+            overflow-x:hidden;
+        }
+
+        /* 🔥 SIDEBAR */
+        .sidebar{
+            width:250px;
+            background:rgba(15,23,42,0.95);
+
+            backdrop-filter:blur(16px);
+
+            border-right:1px solid rgba(255,255,255,0.08);
+
+            height:100vh;
+
+            padding:25px 18px;
+
+            position:fixed;
+
+            left:0;
+            top:0;
+
+            transition:0.35s ease;
+
+            z-index:1000;
+
+            overflow-y:auto;
+        }
+
+        .sidebar.hide{
+            transform:translateX(-100%);
+        }
+
+        /* 🔥 SIDEBAR TITLE */
+        .sidebar h2{
+            text-align:center;
+
+            margin-bottom:35px;
+
+            color:#60a5fa;
+
+            font-size:24px;
+
+            font-weight:700;
+        }
+
+        /* 🔥 SIDEBAR LINKS */
+        .sidebar a{
+            display:flex;
+
+            align-items:center;
+
+            gap:12px;
+
+            color:#e5e7eb;
+
+            text-decoration:none;
+
+            padding:14px 16px;
+
+            margin:10px 0;
+
+            border-radius:14px;
+
+            transition:0.25s ease;
+
+            font-weight:500;
+        }
+
+        .sidebar a:hover{
+            background:linear-gradient(90deg,#2563eb,#7c3aed);
+
+            transform:translateX(6px);
+
+            box-shadow:0 4px 18px rgba(59,130,246,0.35);
+        }
+
+        /* 🔥 MAIN */
+        .main{
+            flex:1;
+
+            width:100%;
+
+            margin-left:0;
+
+            padding:25px;
+
+            transition:0.35s ease;
+        }
+
+        .main.shift{
+            margin-left:250px;
+        }
+
+        /* 🔥 MENU BUTTON */
+        .menu-btn{
+            width:52px;
+            height:52px;
+
+            border:none;
+
+            border-radius:14px;
+
+            background:rgba(255,255,255,0.08);
+
+            color:white;
+
+            font-size:24px;
+
+            cursor:pointer;
+
+            backdrop-filter:blur(10px);
+
+            box-shadow:0 6px 18px rgba(0,0,0,0.25);
+
+            transition:0.25s ease;
+
+            margin-bottom:20px;
+        }
+
+        .menu-btn:hover{
+            transform:scale(1.05);
+
+            background:linear-gradient(90deg,#2563eb,#7c3aed);
+        }
+
+        /* 🔥 CARD */
+        .card{
+            background:rgba(255,255,255,0.08);
+
+            backdrop-filter:blur(14px);
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            border-radius:24px;
+
+            padding:24px;
+
+            box-shadow:0 8px 32px rgba(0,0,0,0.28);
+
+            transition:0.3s ease;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+
+            box-shadow:0 12px 38px rgba(0,0,0,0.35);
+        }
+
+        /* 🔥 BUTTONS */
+        button{
+            border:none;
+
+            padding:12px 18px;
+
+            border-radius:12px;
+
+            font-weight:600;
+
+            cursor:pointer;
+
+            transition:0.25s ease;
+        }
+
+        button:hover{
+            transform:translateY(-2px) scale(1.03);
+        }
+
+        .btn-primary{
+            background:linear-gradient(90deg,#2563eb,#7c3aed);
+            color:white;
+        }
+
+        .btn-success{
+            background:linear-gradient(90deg,#16a34a,#22c55e);
+            color:white;
+        }
+
+        .btn-danger{
+            background:linear-gradient(90deg,#dc2626,#ef4444);
+            color:white;
+        }
+
+        /* 🔥 INPUTS */
+        input,
+        select,
+        textarea{
+            width:100%;
+
+            padding:13px;
+
+            margin:10px 0;
+
+            border:none;
+
+            outline:none;
+
+            border-radius:14px;
+
+            background:rgba(255,255,255,0.08);
+
+            color:white;
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            transition:0.25s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus{
+            border-color:#60a5fa;
+
+            box-shadow:0 0 14px rgba(96,165,250,0.35);
+        }
+
+        input::placeholder,
+        textarea::placeholder{
+            color:#cbd5e1;
+        }
+
+        /* 🔥 TABLE */
+        table{
+            width:100%;
+
+            border-collapse:collapse;
+
+            overflow:hidden;
+
+            border-radius:18px;
+
+            background:rgba(255,255,255,0.05);
+        }
+
+        th{
+            background:rgba(15,23,42,0.95);
+
+            color:white;
+
+            padding:18px;
+
+            font-size:15px;
+
+            font-weight:600;
+        }
+
+        td{
+            padding:18px;
+
+            text-align:center;
+
+            border-bottom:1px solid rgba(255,255,255,0.08);
+        }
+
+        tr:hover{
+            background:rgba(255,255,255,0.05);
+        }
+
+        /* 🔥 POPUP */
+        .popup{
+            position:fixed;
+
+            top:25px;
+            right:25px;
+
+            padding:16px 24px;
+
+            border-radius:14px;
+
+            color:white;
+
+            font-weight:500;
+
+            backdrop-filter:blur(14px);
+
+            box-shadow:0 6px 24px rgba(0,0,0,0.25);
+
+            z-index:9999;
+
+            animation:fadeIn 0.3s ease;
+        }
+
+        .popup.success{
+            background:rgba(34,197,94,0.9);
+        }
+
+        .popup.error{
+            background:rgba(239,68,68,0.9);
+        }
+
+        .popup.info{
+            background:rgba(59,130,246,0.9);
+        }
+
+        @keyframes fadeIn{
+            from{
+                opacity:0;
+                transform:translateY(-10px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        @keyframes fadeOut{
+            from{
+                opacity:1;
+            }
+
+            to{
+                opacity:0;
+                transform:translateY(-10px);
+            }
+        }
+
+        /* 🔥 MOBILE */
+        @media(max-width:768px){
+
+            .main.shift{
+                margin-left:0;
+            }
+
+            .sidebar{
+                width:220px;
+            }
+
+            table{
+                font-size:13px;
+            }
+
+            th,td{
+                padding:12px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- 🔥 SIDEBAR -->
+<div class="sidebar hide" id="sidebar">
+
+{% if session.get("user_type") == "owner" %}
+
+    <h2>📚 Owner</h2>
+
+    <a href="/owner_dashboard">🏠 Dashboard</a>
+    <a href="/add_book_page">➕ Add Book</a>
+    <a href="/requests">📥 Requests</a>
+    <a href="/customers">👥 Customers</a>
+    <a href="/analytics">📊 Analytics</a>
+    <a href="/logout">🚪 Logout</a>
+
+{% elif session.get("user_type") == "customer" %}
+
+    <h2>👤 Customer</h2>
+
+    <a href="/libraries">🏢 Libraries</a>
+    <a href="/borrow_history">📚 Borrow History</a>
+    <a href="/logout">🚪 Logout</a>
+
+{% endif %}
+
+</div>
+
+<!-- 🔥 MAIN -->
+<div class="main" id="main">
+
+    <!-- ☰ MENU -->
+    <button class="menu-btn" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <!-- 🔥 POPUP -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="popup info" id="popup">
+            {{ messages[0] }}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+</div>
+
+<!-- 🔥 SCRIPT -->
+<script>
+
+function toggleSidebar(){
+
+    let sidebar = document.getElementById("sidebar");
+    let main = document.getElementById("main");
+
+    sidebar.classList.toggle("hide");
+    main.classList.toggle("shift");
+}
+
+/* 🔥 AUTO HIDE POPUP */
+setTimeout(() => {
+
+    let popup = document.getElementById("popup");
+
+    if(popup){
+
+        popup.style.animation = "fadeOut 0.5s ease forwards";
+
+        setTimeout(() => {
+            popup.remove();
+        },500);
+    }
+
+},3000);
+
+</script>
+
+</body>
+</html>

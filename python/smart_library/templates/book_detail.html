@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- 🔥 BOOK CARD -->
+<div class="card" style="max-width:750px;margin:auto;text-align:center;">
+
+    <img src="{{ book.image or '/static/book.png' }}" 
+         style="width:200px;border-radius:10px;margin-bottom:10px;">
+
+    <h2>{{ book.name }}</h2>
+    <p style="color:gray;">{{ book.author }}</p>
+    <p>{{ book.summary }}</p>
+
+    <hr>
+
+    <p><b>Price:</b> ₹{{ book.price }}</p>
+    <p><b>Max Days:</b> {{ book.max_days }}</p>
+
+    <!-- ⭐ AVG RATING -->
+    <p>
+        ⭐ Rating:
+        {% if avg_rating is not none %}
+            {{ avg_rating | round(1) }} / 5
+        {% else %}
+            No ratings yet
+        {% endif %}
+    </p>
+
+    <!-- 📦 STOCK -->
+    {% if book.quantity == 0 %}
+        <p style="color:red;font-weight:bold;">Out of Stock</p>
+    {% else %}
+        <p style="color:green;">Available: {{ book.quantity }}</p>
+    {% endif %}
+
+    <br>
+
+    <!-- 🔥 SMART BORROW UX -->
+    {% if session.get("user_type") == "customer" %}
+
+        {% if borrowed %}
+            <p style="color:blue;font-weight:bold;">
+                ✔ You borrowed this book  
+                {% if remaining_days is not none %}
+                    <br>⏳ {{ remaining_days }} days remaining
+                {% endif %}
+            </p>
+
+        {% elif pending %}
+            <p style="color:orange;font-weight:bold;">
+                ⏳ Request Pending Approval
+            </p>
+            <button class="btn-danger" disabled>Waiting...</button>
+
+        {% elif book.quantity > 0 %}
+            <a href="/borrow/{{ book.id }}">
+                <button class="btn-success">📥 Borrow Book</button>
+            </a>
+
+        {% else %}
+            <button class="btn-danger" disabled>Out of Stock</button>
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+<br>
+
+<!-- ✍ ADD REVIEW -->
+{% if session.get("user_type") == "customer" %}
+<div class="card" style="max-width:750px;margin:auto;">
+
+<h3>Add Review</h3>
+
+<form method="POST" action="/add_review/{{ book.id }}" onsubmit="return validateRating()">
+
+<!-- ⭐ STAR RATING (NO JINJA BUG VERSION) -->
+<div id="stars" style="font-size:25px;margin-bottom:10px;">
+    <span onclick="setRating(1)" class="star">★</span>
+    <span onclick="setRating(2)" class="star">★</span>
+    <span onclick="setRating(3)" class="star">★</span>
+    <span onclick="setRating(4)" class="star">★</span>
+    <span onclick="setRating(5)" class="star">★</span>
+</div>
+
+<input type="hidden" name="rating" id="rating">
+
+<textarea name="review" placeholder="Write your review..." 
+          style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;" required></textarea>
+
+<br><br>
+<button class="btn-primary">Submit</button>
+
+</form>
+
+</div>
+{% endif %}
+
+<br>
+
+<!-- 💬 REVIEWS -->
+<div class="card" style="max-width:750px;margin:auto;">
+
+<h3>Reviews</h3>
+
+{% if reviews %}
+    {% for r in reviews %}
+    <div style="border-bottom:1px solid #ddd;padding:10px;">
+
+        <b>{{ r.customer_name }}</b> ⭐ {{ r.rating }}/5
+        <p>{{ r.review }}</p>
+
+        {% if session.get("customer_name") == r.customer_name %}
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+
+            <!-- EDIT -->
+            <form method="POST" action="/edit_review/{{ r.id }}" style="display:flex;gap:5px;">
+                <select name="rating" required>
+                    <option value="1" {% if r.rating == 1 %}selected{% endif %}>1</option>
+                    <option value="2" {% if r.rating == 2 %}selected{% endif %}>2</option>
+                    <option value="3" {% if r.rating == 3 %}selected{% endif %}>3</option>
+                    <option value="4" {% if r.rating == 4 %}selected{% endif %}>4</option>
+                    <option value="5" {% if r.rating == 5 %}selected{% endif %}>5</option>
+                </select>
+
+                <input name="review" value="{{ r.review }}" required style="padding:5px;">
+                <button class="btn-primary">Update</button>
+            </form>
+
+            <!-- DELETE -->
+            <a href="/delete_review/{{ r.id }}" onclick="return confirm('Delete this review?')">
+                <button class="btn-danger">Delete</button>
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No reviews yet</p>
+{% endif %}
+
+</div>
+
+<!-- ⭐ STAR STYLE -->
+<style>
+.star {
+    cursor: pointer;
+    color: #ccc;
+    transition: 0.2s;
+}
+.star:hover {
+    transform: scale(1.2);
+}
+.star.active {
+    color: gold;
+}
+</style>
+
+<!-- ⭐ STAR SCRIPT -->
+<script>
+function setRating(n){
+    document.getElementById("rating").value = n;
+
+    document.querySelectorAll(".star").forEach((s,i)=>{
+        s.classList.toggle("active", i < n);
+    });
+}
+
+// 🔒 prevent empty rating
+function validateRating(){
+    let rating = document.getElementById("rating").value;
+    if(!rating){
+        alert("Please select a rating ⭐");
+        return false;
+    }
+    return true;
+}
+</script>
+
+{% endblock %}

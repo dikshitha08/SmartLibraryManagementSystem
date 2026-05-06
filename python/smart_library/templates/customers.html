@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Details</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+
+            background:
+            linear-gradient(135deg,#0f172a,#111827,#1e293b);
+
+            color:white;
+
+            padding:30px;
+
+            min-height:100vh;
+        }
+
+        /* 🔥 TOP */
+        .top{
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            margin-bottom:30px;
+
+            flex-wrap:wrap;
+
+            gap:15px;
+        }
+
+        h2{
+            font-size:34px;
+            font-weight:700;
+        }
+
+        /* 🔥 CARD */
+        .card{
+            background:rgba(255,255,255,0.08);
+
+            backdrop-filter:blur(16px);
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            border-radius:28px;
+
+            padding:25px;
+
+            box-shadow:0 8px 32px rgba(0,0,0,0.35);
+
+            overflow-x:auto;
+        }
+
+        /* 🔥 TABLE */
+        table{
+            width:100%;
+
+            min-width:1200px;
+
+            border-collapse:collapse;
+        }
+
+        th{
+            background:rgba(15,23,42,0.95);
+
+            color:white;
+
+            padding:18px;
+
+            font-size:16px;
+
+            font-weight:600;
+
+            white-space:nowrap;
+        }
+
+        th:first-child{
+            border-top-left-radius:18px;
+        }
+
+        th:last-child{
+            border-top-right-radius:18px;
+        }
+
+        td{
+            padding:22px 18px;
+
+            text-align:center;
+
+            border-bottom:1px solid rgba(255,255,255,0.08);
+
+            vertical-align:middle;
+
+            white-space:nowrap;
+
+            font-size:16px;
+        }
+
+        tr:hover{
+            background:rgba(255,255,255,0.04);
+        }
+
+        /* 🔥 BUTTONS */
+        button{
+            border:none;
+
+            padding:12px 18px;
+
+            border-radius:14px;
+
+            cursor:pointer;
+
+            font-weight:600;
+
+            transition:0.25s ease;
+
+            font-family:'Poppins',sans-serif;
+        }
+
+        button:hover{
+            transform:translateY(-2px) scale(1.03);
+        }
+
+        .return-btn{
+            background:
+            linear-gradient(90deg,#16a34a,#22c55e);
+
+            color:white;
+        }
+
+        .pay-btn{
+            background:
+            linear-gradient(90deg,#dc2626,#ef4444);
+
+            color:white;
+        }
+
+        .back-btn{
+            background:
+            linear-gradient(90deg,#2563eb,#7c3aed);
+
+            color:white;
+        }
+
+        /* 🔥 STATUS */
+        .status-returned{
+            color:#22c55e;
+
+            font-weight:700;
+
+            font-size:18px;
+        }
+
+        .status-pending{
+            color:#f59e0b;
+
+            font-weight:700;
+        }
+
+        /* 🔥 FINE */
+        .fine{
+            color:#ef4444;
+
+            font-weight:700;
+
+            font-size:18px;
+        }
+
+        /* 🔥 SELECT */
+        select{
+            padding:10px 14px;
+
+            border:none;
+
+            border-radius:12px;
+
+            background:rgba(255,255,255,0.08);
+
+            color:white;
+
+            outline:none;
+
+            font-family:'Poppins',sans-serif;
+
+            margin-bottom:10px;
+        }
+
+        option{
+            background:#111827;
+        }
+
+        /* 🔥 SCROLLBAR */
+        ::-webkit-scrollbar{
+            height:10px;
+            width:8px;
+        }
+
+        ::-webkit-scrollbar-thumb{
+            background:#475569;
+            border-radius:20px;
+        }
+
+        /* 🔥 MOBILE */
+        @media(max-width:768px){
+
+            body{
+                padding:15px;
+            }
+
+            h2{
+                font-size:26px;
+            }
+
+            .card{
+                padding:15px;
+            }
+
+            td{
+                padding:18px 14px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- 🔥 TOP -->
+<div class="top">
+
+    <h2>📋 Customer Details</h2>
+
+    <a href="/owner_dashboard">
+        <button class="back-btn">
+            ⬅ Dashboard
+        </button>
+    </a>
+
+</div>
+
+<!-- 🔥 TABLE CARD -->
+<div class="card">
+
+<table>
+
+<tr>
+<th>Name</th>
+<th>Book</th>
+<th>Borrow Date</th>
+<th>Due Date</th>
+<th>Status</th>
+<th>Fine</th>
+<th>Action</th>
+</tr>
+
+{% for c in data %}
+
+<tr>
+
+<td>
+    {{ c.customer_name }}
+</td>
+
+<td>
+    {{ c.book }}
+</td>
+
+<td>
+    {{ c.borrow_date }}
+</td>
+
+<td>
+    {{ c.return_date }}
+</td>
+
+<td>
+
+{% if c.status == "Returned" %}
+
+    <span class="status-returned">
+        ✔ Returned
+    </span>
+
+{% else %}
+
+    <span class="status-pending">
+        ⏳ Not Returned
+    </span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if c.fine > 0 %}
+
+    <span class="fine">
+        ₹{{ c.fine }}
+    </span>
+
+{% else %}
+
+    <span style="color:#22c55e;font-weight:600;">
+        ₹0
+    </span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if c.status == "Returned" %}
+
+    <span style="font-size:24px;color:#22c55e;">
+        ✔
+    </span>
+
+{% elif c.fine > 0 %}
+
+<form method="POST" action="/pay_return/{{ c.id }}">
+
+    <select name="payment" required>
+        <option value="">Select Payment</option>
+        <option value="Cash">Cash</option>
+        <option value="UPI">UPI</option>
+    </select>
+
+    <br>
+
+    <button class="pay-btn">
+        Pay ₹{{ c.fine }} & Return
+    </button>
+
+</form>
+
+{% else %}
+
+<a href="/return_book/{{ c.id }}">
+
+    <button class="return-btn">
+        Return Book
+    </button>
+
+</a>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</body>
+</html>

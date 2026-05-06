@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Requests</h2>
+
+<div class="card">
+
+<table style="width:100%;border-collapse:collapse;">
+
+<tr style="background:#222;color:white;">
+<th>Book</th>
+<th>User</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+{% if data %}
+
+{% for r in data %}
+<tr style="border-bottom:1px solid #ddd; text-align:center;">
+
+    <td>{{ r.name }}</td>
+
+    <td>{{ r.customer_name }}</td>
+
+    <td>
+        {% if r.status == "Pending" %}
+            <span style="color:orange;">⏳ Pending</span>
+        {% elif r.status == "Approved" %}
+            <span style="color:green;">✔ Approved</span>
+        {% else %}
+            <span style="color:red;">❌ Rejected</span>
+        {% endif %}
+    </td>
+
+    <td>
+
+        {% if r.status == "Pending" %}
+
+        <!-- APPROVE WITH OTP -->
+        <form method="POST" action="/verify_otp/{{ r.id }}" style="display:inline;">
+            <input name="otp" placeholder="OTP" required style="width:80px;">
+            <button class="btn-success">Approve</button>
+        </form>
+
+        <!-- REJECT -->
+        <a href="/reject/{{ r.id }}">
+            <button class="btn-danger">Reject</button>
+        </a>
+
+        {% else %}
+            -
+        {% endif %}
+
+    </td>
+
+</tr>
+{% endfor %}
+
+{% else %}
+
+<tr>
+<td colspan="4" style="padding:20px;text-align:center;color:gray;">
+    No requests found
+</td>
+</tr>
+
+{% endif %}
+
+</table>
+
+</div>
+
+{% endblock %}
